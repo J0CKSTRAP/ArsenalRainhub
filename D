@@ -37,7 +37,7 @@ local Chams = Instance.new("TextButton")
 --Properties:
 
 Arsenal.Name = "Arsenal"
-Arsenal.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+Arsenal.Parent = game.CoreGui
 Arsenal.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Frame.Parent = Arsenal
@@ -142,6 +142,7 @@ Localplayer.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
 Localplayer.BorderSizePixel = 0
 Localplayer.Position = UDim2.new(0.0182767622, 0, 0.100000001, 0)
 Localplayer.Size = UDim2.new(0, 369, 0, 300)
+Localplayer.Visible = false
 
 Fill.Name = "Fill"
 Fill.Parent = Localplayer
@@ -272,7 +273,6 @@ Main.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
 Main.BorderSizePixel = 0
 Main.Position = UDim2.new(0.0182767622, 0, 0.100000001, 0)
 Main.Size = UDim2.new(0, 369, 0, 300)
-Main.Visible = false
 
 Aimbot.Name = "Aimbot"
 Aimbot.Parent = Main
@@ -336,7 +336,7 @@ Chams.TextXAlignment = Enum.TextXAlignment.Left
 
 -- Scripts:
 
-local function KTJC_fake_script() -- Open.LocalScript 
+local function USVH_fake_script() -- Open.LocalScript 
 	local script = Instance.new('LocalScript', Open)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -345,8 +345,8 @@ local function KTJC_fake_script() -- Open.LocalScript
 		script.Parent.Visible = false
 	end)
 end
-coroutine.wrap(KTJC_fake_script)()
-local function XZTV_fake_script() -- Close.LocalScript 
+coroutine.wrap(USVH_fake_script)()
+local function ZUMSEH_fake_script() -- Close.LocalScript 
 	local script = Instance.new('LocalScript', Close)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -355,8 +355,8 @@ local function XZTV_fake_script() -- Close.LocalScript
 		script.Parent.Visible = false
 	end)
 end
-coroutine.wrap(XZTV_fake_script)()
-local function FYNTJZO_fake_script() -- Fill.LocalScript 
+coroutine.wrap(ZUMSEH_fake_script)()
+local function VURPLV_fake_script() -- Fill.LocalScript 
 	local script = Instance.new('LocalScript', Fill)
 
 	local UserInputService = game:GetService("UserInputService")
@@ -382,8 +382,8 @@ local function FYNTJZO_fake_script() -- Fill.LocalScript
 		end
 	end)
 end
-coroutine.wrap(FYNTJZO_fake_script)()
-local function EURFX_fake_script() -- Fill_2.LocalScript 
+coroutine.wrap(VURPLV_fake_script)()
+local function UVQZFAR_fake_script() -- Fill_2.LocalScript 
 	local script = Instance.new('LocalScript', Fill_2)
 
 	local UserInputService = game:GetService("UserInputService")
@@ -409,8 +409,8 @@ local function EURFX_fake_script() -- Fill_2.LocalScript
 		end
 	end)
 end
-coroutine.wrap(EURFX_fake_script)()
-local function BBWOH_fake_script() -- Rainbow.LocalScript 
+coroutine.wrap(UVQZFAR_fake_script)()
+local function IXUMP_fake_script() -- Rainbow.LocalScript 
 	local script = Instance.new('LocalScript', Rainbow)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -488,18 +488,117 @@ local function BBWOH_fake_script() -- Rainbow.LocalScript
 	
 	end)
 end
-coroutine.wrap(BBWOH_fake_script)()
-local function XABERSG_fake_script() -- Fly.LocalScript 
+coroutine.wrap(IXUMP_fake_script)()
+local function XCWG_fake_script() -- Fly.LocalScript 
 	local script = Instance.new('LocalScript', Fly)
 
 	script.Parent.MouseButton1Click:Connect(function()
-		script.Parent.Text = "  Script Patched"
-		wait(1.2)
-		script.Parent.Text = "  Fly [Q to end]"
+		local plr = game:GetService("Players").LocalPlayer
+		repeat wait() until plr and plr.Character and plr.Character:findFirstChild("HumanoidRootPart") and plr.Character:findFirstChild("Humanoid") 
+		local mouse = game.Players.LocalPlayer:GetMouse()  
+		repeat wait() until mouse
+	
+		local torso = plr.Character.HumanoidRootPart 
+		local flying = false
+		local deb = true 
+		local ctrl = {f = 0, b = 0, l = 0, r = 0} 
+		local lastctrl = {f = 0, b = 0, l = 0, r = 0} 
+		local maxspeed = 1000 
+		local speed = 50
+		function Fly() 
+			local bg = Instance.new("BodyGyro", torso) 
+			bg.P = 9e4 
+			bg.maxTorque = Vector3.new(9e9, 9e9, 9e9) 
+			bg.cframe = torso.CFrame 
+			local bv = Instance.new("BodyVelocity", torso) 
+			bv.velocity = Vector3.new(0,0.1,0) 
+			bv.maxForce = Vector3.new(9e9, 9e9, 9e9) 
+			repeat wait() 
+				plr.Character.Humanoid.PlatformStand = true 
+				if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then 
+					speed = speed+.5+(speed/maxspeed) 
+					if speed > maxspeed then 
+						speed = maxspeed 
+					end 
+				elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then 
+					speed = speed-1 
+					if speed < 0 then 
+						speed = 0
+					else
+						speed = 50
+					end 
+				end 
+				if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then 
+					bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed 
+					lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r} 
+				elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then 
+					bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed 
+				else 
+					bv.velocity = Vector3.new(0,0.1,0) 
+				end 
+				bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0) 
+			until not flying 
+			ctrl = {f = 0, b = 0, l = 0, r = 0} 
+			lastctrl = {f = 0, b = 0, l = 0, r = 0} 
+	
+			bg:Destroy() 
+			bv:Destroy() 
+			plr.Character.Humanoid.PlatformStand = false 
+			speed = 50
+		end 
+	
+		mouse.KeyDown:connect(function(key) 
+			if key:lower() == "q then 
+				if flying then flying = false 
+					speed = 50
+				else 
+					flying = true 
+					Fly()
+	
+				end 
+			elseif key:lower() == "w" then 
+				ctrl.f = 1 
+			elseif key:lower() == "s" then 
+				ctrl.b = -1 
+			elseif key:lower() == "a" then 
+				ctrl.l = -1 
+			elseif key:lower() == "d" then 
+				ctrl.r = 1 
+			end 
+		end) 
+		mouse.KeyUp:connect(function(key) 
+			if key:lower() == "w" then 
+				ctrl.f = 0 
+			elseif key:lower() == "s" then 
+				ctrl.b = 0 
+			elseif key:lower() == "a" then 
+				ctrl.l = 0 
+			elseif key:lower() == "d" then 
+				ctrl.r = 0 
+			end 
+		end)
+	
+		plr.Character.Humanoid.StateChanged:Connect(function(o,n)
+			if n == Enum.HumanoidStateType.Running then
+				ctrl.f = 1
+			else
+				ctrl.f = 0
+			end
+	
+		end)
+		script.Parent.TextButton.MouseButton1Click:Connect(function()
+			if flying then
+				flying = false
+				speed = 50
+			else
+				flying = true
+				Fly()
+			end
+		end)
 	end)
 end
-coroutine.wrap(XABERSG_fake_script)()
-local function IIRWU_fake_script() -- TextButton_3.LocalScript 
+coroutine.wrap(XCWG_fake_script)()
+local function MUBYV_fake_script() -- TextButton_3.LocalScript 
 	local script = Instance.new('LocalScript', TextButton_3)
 
 	
@@ -508,8 +607,8 @@ local function IIRWU_fake_script() -- TextButton_3.LocalScript
 		script.Parent.Parent.Parent.Localplayer.Visible = true
 	end)
 end
-coroutine.wrap(IIRWU_fake_script)()
-local function LFGAJO_fake_script() -- TextButton_4.LocalScript 
+coroutine.wrap(MUBYV_fake_script)()
+local function DDSN_fake_script() -- TextButton_4.LocalScript 
 	local script = Instance.new('LocalScript', TextButton_4)
 
 	
@@ -519,8 +618,8 @@ local function LFGAJO_fake_script() -- TextButton_4.LocalScript
 	end)
 	
 end
-coroutine.wrap(LFGAJO_fake_script)()
-local function QMMGG_fake_script() -- Aimbot.LocalScript 
+coroutine.wrap(DDSN_fake_script)()
+local function UHYCQ_fake_script() -- Aimbot.LocalScript 
 	local script = Instance.new('LocalScript', Aimbot)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -740,8 +839,8 @@ local function QMMGG_fake_script() -- Aimbot.LocalScript
 		SeparateNotify("Ciazware", "Universal Aimbot loaded in: "..string.format("%.7f", tostring(tick() - CiazwareUniversalAimbotLoadingTime)), "", 3)
 	end)
 end
-coroutine.wrap(QMMGG_fake_script)()
-local function VGUXFQ_fake_script() -- Recoil.LocalScript 
+coroutine.wrap(UHYCQ_fake_script)()
+local function DTAAWO_fake_script() -- Recoil.LocalScript 
 	local script = Instance.new('LocalScript', Recoil)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -750,8 +849,8 @@ local function VGUXFQ_fake_script() -- Recoil.LocalScript
 		script.Parent.Text = "  Wallbang"
 	end)
 end
-coroutine.wrap(VGUXFQ_fake_script)()
-local function LSWNZTB_fake_script() -- Auto.LocalScript 
+coroutine.wrap(DTAAWO_fake_script)()
+local function CZMSR_fake_script() -- Auto.LocalScript 
 	local script = Instance.new('LocalScript', Auto)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -881,8 +980,8 @@ local function LSWNZTB_fake_script() -- Auto.LocalScript
 		end)
 	end)
 end
-coroutine.wrap(LSWNZTB_fake_script)()
-local function HAXSKTW_fake_script() -- Esp.LocalScript 
+coroutine.wrap(CZMSR_fake_script)()
+local function HSMOQZ_fake_script() -- Esp.LocalScript 
 	local script = Instance.new('LocalScript', Esp)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -924,8 +1023,8 @@ local function HAXSKTW_fake_script() -- Esp.LocalScript
 		end)
 	end)
 end
-coroutine.wrap(HAXSKTW_fake_script)()
-local function QCYY_fake_script() -- Chams.LocalScript 
+coroutine.wrap(HSMOQZ_fake_script)()
+local function DCJILF_fake_script() -- Chams.LocalScript 
 	local script = Instance.new('LocalScript', Chams)
 
 	script.Parent.MouseButton1Click:Connect(function()
@@ -970,8 +1069,8 @@ local function QCYY_fake_script() -- Chams.LocalScript
 			end
 	end)
 end
-coroutine.wrap(QCYY_fake_script)()
-local function ZBVUM_fake_script() -- Frame.LocalScript 
+coroutine.wrap(DCJILF_fake_script)()
+local function MXBA_fake_script() -- Frame.LocalScript 
 	local script = Instance.new('LocalScript', Frame)
 
 	local UIS = game:GetService("UserInputService")
@@ -1012,4 +1111,4 @@ local function ZBVUM_fake_script() -- Frame.LocalScript
 	
 	dragify(script.Parent)
 end
-coroutine.wrap(ZBVUM_fake_script)()
+coroutine.wrap(MXBA_fake_script)()
